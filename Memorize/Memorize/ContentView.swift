@@ -10,15 +10,18 @@ import SwiftUI
 // behave like a ...
 struct ContentView: View {
     // Computed Proprety
+    // Array
+    let emojis = ["👻", "🎃", "🕷️", "😈", "😈"]
+    
     var body: some View {
         // creating instances of structs,named parameters,parameter defaults
         // @ViewBulder TupleView(bag of Lego)
         // View modifier scope
         HStack {
-            CardView(isFaceUp: false)
-            CardView()
-            CardView(isFaceUp: true)
-            CardView(isFaceUp: true)
+            // ForEach
+            ForEach(emojis.indices, id: \.self) { index in
+                CardView(content: emojis[index])
+            }
         }
         .foregroundColor(.orange)
         .padding()
@@ -31,7 +34,8 @@ struct CardView: View {
     // @State
     // That @State is actually creating a pointer to a little piece of memory where it keeps XXX.
     // So now the pointer never changes,the pointer itself,the thing it points to can change,but the pointer never changes.
-    @State var isFaceUp = false
+    let content: String
+    @State var isFaceUp = true
     
     var body: some View {
         // trailing closure syntax
@@ -44,7 +48,7 @@ struct CardView: View {
                 // View modifier
                 base.fill(.white)
                 base.strokeBorder(lineWidth: 2)
-                Text("👻").font(.largeTitle)
+                Text(content).font(.largeTitle)
             } else {
                 // View modifier
                 base.fill()
