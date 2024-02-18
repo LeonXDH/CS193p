@@ -15,10 +15,10 @@ struct ContentView: View {
         // @ViewBulder TupleView(bag of Lego)
         // View modifier scope
         HStack {
+            CardView(isFaceUp: false)
+            CardView()
             CardView(isFaceUp: true)
-            CardView()
-            CardView()
-            CardView()
+            CardView(isFaceUp: true)
         }
         .foregroundColor(.orange)
         .padding()
@@ -26,21 +26,33 @@ struct ContentView: View {
 }
 
 struct CardView: View {
-    var isFaceUp: Bool = false
+    // let vs var
+    // if you want some advice, always start out with let and the compiler will complain
+    // @State
+    // That @State is actually creating a pointer to a little piece of memory where it keeps XXX.
+    // So now the pointer never changes,the pointer itself,the thing it points to can change,but the pointer never changes.
+    @State var isFaceUp = false
+    
     var body: some View {
-        ZStack(content: {
+        // trailing closure syntax
+        ZStack {
+            // locals in @ViewBuilder
+            // Type Inference
+            // Swift is what's called a extremely strongly typed language.
+            let base = RoundedRectangle(cornerRadius: 12)
             if isFaceUp {
                 // View modifier
-                RoundedRectangle(cornerRadius: 12)
-                    .foregroundColor(.white)
-                RoundedRectangle(cornerRadius: 12)
-                    .strokeBorder(lineWidth: 2)
+                base.fill(.white)
+                base.strokeBorder(lineWidth: 2)
                 Text("👻").font(.largeTitle)
             } else {
                 // View modifier
-                RoundedRectangle(cornerRadius: 12)
+                base.fill()
             }
-        })
+        }.onTapGesture {
+            // print to console
+            isFaceUp.toggle()
+        }
     }
 }
 
